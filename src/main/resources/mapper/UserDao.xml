@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soecode.lyf.dao.UserDao">
+
+
+	<insert id="save">
+		<!-- ignore 主键冲突，报错 -->
+		INSERT  INTO user (phoneNum, password)
+		VALUES (#{phoneNum}, #{password})
+	</insert>
+	<!-- 目的：为dao接口方法提供sql语句配置 -->
+	<select id="queryById" resultType="User" parameterType="long">
+		<!-- 具体的sql -->
+		SELECT
+			id,
+			phoneNum,
+			password
+		FROM
+			User
+		WHERE
+			id = #{userId}
+	</select>
+
+	<!--用户登录，查看是否存在-->
+	<select id="findUserByUserNameAndPass" resultType="java.lang.Integer" parameterType="Object">
+          select count(1) from user where 1=1 and phoneNum= #{phoneNum} and password =#{password}
+	</select>
+
+	<!--查询所有的list表-->
+	<select id="queryAll" resultType="User">
+		SELECT
+			id,
+			phoneNum,
+			password
+		FROM
+			User
+		ORDER BY
+			id
+
+	</select>
+
+	<update id="updateUser" parameterType="Object">
+		UPDATE user
+		SET phoneNum = #{phoneNum},
+		    password=#{password}
+		WHERE
+			id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="long">
+		delete from user where 1=1 and id=#{userId}
+	</delete>
+</mapper>
